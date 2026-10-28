@@ -1,0 +1,190 @@
+@import "./Seller_Login.css";
+
+/* Seller registration-specific styles */
+
+.ns-auth--register .ns-auth-layout {
+    align-items: start;
+    min-height: auto;
+}
+
+.ns-auth--register .ns-auth-intro {
+    padding-top: 50px;
+}
+
+.ns-auth--register .ns-auth-form-area {
+    padding-top: 15px;
+    padding-bottom: 35px;
+}
+
+
+/* Terms checkbox */
+
+.ns-auth-terms {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin: 6px 0 8px;
+    color: #35524c;
+    font-size: 11px;
+    line-height: 1.6;
+    cursor: pointer;
+}
+
+.ns-auth-terms input {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin: 1px 0 0;
+    accent-color: #087c43;
+}
+
+
+/* Back button for OTP screen */
+
+.ns-auth-back {
+    padding: 5px;
+    border: none;
+    background: transparent;
+    color: #087344;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.ns-auth-back:hover {
+    text-decoration: underline;
+}
+
+
+/* Registration form can grow vertically */
+
+.ns-auth--register .ns-auth-card {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+@media (max-width: 760px) {
+    .ns-auth--register .ns-auth-intro {
+        padding-top: 5px;
+        padding-bottom: 0;
+    }
+    .ns-auth--register .ns-auth-form-area {
+        padding-top: 0;
+        padding-bottom: 10px;
+    }
+}
+
+
+/* Mobile number with India country code */
+
+.ns-auth-phone-control {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid #dce6df;
+    border-radius: 8px;
+    background: #ffffff;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ns-auth-phone-control:focus-within {
+    border-color: #087c43;
+    box-shadow: 0 0 0 3px rgba(8, 124, 67, 0.08);
+}
+
+.ns-auth-country-code {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    padding: 0 12px;
+    border-right: 1px solid #dce6df;
+    background: #f5faf6;
+    color: #087344;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.ns-auth-phone-control input {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: none !important;
+    outline: none;
+    box-shadow: none !important;
+    background: transparent;
+    color: #35524c;
+    font: inherit;
+    font-size: 13px;
+}
+
+.ns-auth-phone-control input:focus {
+    border: none;
+    outline: none;
+}
+
+.ns-auth-phone-control input[aria-invalid="true"] {
+    border: none;
+}
+
+.ns-auth-phone-control input::placeholder {
+    color: #9aa8a0;
+}
+
+
+/* Mobile number field with India country code */
+
+.ns-auth-phone-control {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 52px;
+    overflow: hidden;
+    border: 1px solid #e0e8e2;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.96);
+}
+
+.ns-auth-phone-control:focus-within {
+    border-color: #25814b;
+    box-shadow: 0 0 0 3px #25814b18;
+}
+
+.ns-auth-country-code {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    padding: 0 13px;
+    border-right: 1px solid #e0e8e2;
+    background: #f5faf6;
+    color: #087344;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.ns-auth-phone-control input {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    height: 50px;
+    padding: 0 13px;
+    border: none !important;
+    border-radius: 0;
+    outline: none;
+    box-shadow: none !important;
+    background: transparent;
+    color: #25443d;
+    font: inherit;
+    font-size: 13px;
+}
+
+.ns-auth-phone-control input:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}

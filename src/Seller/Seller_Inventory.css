@@ -1,0 +1,826 @@
+.nsi-page {
+    min-height: 100vh;
+    display: flex;
+    background: #f5f9f7;
+    color: #183b39;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 13px;
+}
+
+.nsi-page * {
+    box-sizing: border-box;
+}
+
+.nsi-page a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.nsi-sidebar {
+    width: 235px;
+    min-width: 235px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 0 11px 16px;
+    background: #fff;
+    border-right: 1px solid #e9efeb;
+}
+
+.nsi-brand {
+    height: 66px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px;
+    border-bottom: 1px solid #eff3f0;
+}
+
+.nsi-brand-icon {
+    font-size: 29px;
+}
+
+.nsi-brand>span:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.nsi-brand strong {
+    color: #075847;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.7px;
+}
+
+.nsi-brand small {
+    color: #13855d;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.nsi-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-top: 20px;
+}
+
+.nsi-nav-link {
+    min-height: 43px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 12px;
+    color: #35524a;
+    border-radius: 8px;
+    font-size: 13px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.nsi-nav-link>span {
+    width: 23px;
+    text-align: center;
+    font-size: 19px;
+}
+
+.nsi-nav-link:hover {
+    color: #078650;
+    background: #eff9f3;
+}
+
+.nsi-nav-link.active {
+    color: #fff;
+    background: #10965c;
+    font-weight: 600;
+}
+
+.nsi-promo {
+    margin: auto 6px 22px;
+    padding: 17px 12px;
+    text-align: center;
+    border-radius: 10px;
+    color: #167b50;
+    background: #eaf8f0;
+}
+
+.nsi-promo>span {
+    font-size: 34px;
+}
+
+.nsi-promo h3 {
+    margin: 10px 0 7px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.nsi-promo p {
+    color: #65887a;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.nsi-promo a {
+    display: block;
+    padding: 10px 6px;
+    background: #11965d;
+    color: #fff;
+    border-radius: 7px;
+    font-weight: 600;
+}
+
+.nsi-sidebar-footer {
+    padding: 0 8px;
+    color: #96a59e;
+    font-size: 10px;
+}
+
+.nsi-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.nsi-topbar {
+    min-height: 65px;
+    padding: 11px 23px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    background: #fff;
+    border-bottom: 1px solid #e9efeb;
+}
+
+.nsi-store-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nsi-avatar {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: #fff;
+    background: #10965c;
+    font-size: 20px;
+}
+
+.nsi-store-profile>span:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nsi-store-profile strong {
+    color: #29483f;
+    font-size: 11px;
+}
+
+.nsi-store-profile small {
+    color: #84948d;
+    font-size: 10px;
+}
+
+.nsi-account-link {
+    color: #168453 !important;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.nsi-content {
+    max-width: 1650px;
+    margin: 0 auto;
+    padding: 24px 22px 14px;
+}
+
+.nsi-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 21px;
+}
+
+.nsi-eyebrow {
+    margin: 0 0 7px;
+    color: #138957;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+}
+
+.nsi-heading h1 {
+    margin: 0 0 8px;
+    color: #173d38;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+}
+
+.nsi-heading>div:first-child>p:last-child {
+    margin: 0;
+    color: #7b8d85;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.nsi-heading-actions {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.nsi-primary-button,
+.nsi-secondary-button {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 650;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.nsi-primary-button {
+    border: 1px solid #11965d;
+    color: #fff !important;
+    background: #11965d;
+}
+
+.nsi-primary-button:hover {
+    background: #087b4a;
+}
+
+.nsi-secondary-button {
+    border: 1px solid #d4eadd;
+    color: #168451;
+    background: #f0faf4;
+}
+
+.nsi-secondary-button:hover {
+    background: #e4f6eb;
+}
+
+.nsi-notice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 12px 15px;
+    border: 1px solid #d3eadb;
+    border-radius: 8px;
+    color: #14794d;
+    background: #edf9f1;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.nsi-notice button {
+    border: 0;
+    color: inherit;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.nsi-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 15px;
+    margin-bottom: 21px;
+}
+
+.nsi-stat-card {
+    min-width: 0;
+    min-height: 108px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid #e3ece7;
+    border-radius: 10px;
+}
+
+.nsi-stat-icon {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.nsi-stat-icon.total {
+    color: #128353;
+    background: #e2f6e9;
+}
+
+.nsi-stat-icon.units {
+    color: #297bc5;
+    background: #e4f2ff;
+}
+
+.nsi-stat-icon.low {
+    color: #c48913;
+    background: #fff2d8;
+}
+
+.nsi-stat-icon.empty {
+    color: #d84a4a;
+    background: #ffe7e7;
+}
+
+.nsi-stat-card>div {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.nsi-stat-card small {
+    color: #70857a;
+    font-size: 11px;
+}
+
+.nsi-stat-card strong {
+    margin: 6px 0 5px;
+    color: #183d38;
+    font-size: 23px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.nsi-stat-card>div>span {
+    color: #91a098;
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.nsi-panel {
+    min-width: 0;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e3ebe7;
+    border-radius: 10px;
+}
+
+.nsi-panel-heading {
+    padding: 18px 19px 14px;
+}
+
+.nsi-panel-heading h2 {
+    margin: 0 0 6px;
+    color: #183e38;
+    font-size: 17px;
+    font-weight: 750;
+}
+
+.nsi-panel-heading p {
+    margin: 0;
+    color: #86978f;
+    font-size: 11px;
+}
+
+.nsi-filters {
+    padding: 13px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: #fbfdfc;
+    border-top: 1px solid #eef2ef;
+    border-bottom: 1px solid #e9efeb;
+}
+
+.nsi-search {
+    height: 38px;
+    flex: 1 1 240px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 11px;
+    border: 1px solid #dfe8e3;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.nsi-search:focus-within {
+    border-color: #14975e;
+    box-shadow: 0 0 0 3px rgba(20, 151, 94, 0.07);
+}
+
+.nsi-search>span {
+    color: #7b8e85;
+    font-size: 21px;
+}
+
+.nsi-search input {
+    width: 100%;
+    min-width: 0;
+    outline: none;
+    border: 0;
+    color: #29473e;
+    background: transparent;
+    font: inherit;
+    font-size: 11px;
+}
+
+.nsi-filters select {
+    min-width: 155px;
+    min-height: 38px;
+    padding: 0 10px;
+    border: 1px solid #dfe8e3;
+    border-radius: 7px;
+    outline-color: #14975e;
+    color: #466157;
+    background: #fff;
+    font-family: inherit;
+    font-size: 11px;
+}
+
+.nsi-table-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.nsi-table {
+    width: 100%;
+    min-width: 1050px;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 11px;
+}
+
+.nsi-table thead {
+    background: #f5f9f7;
+}
+
+.nsi-table th {
+    padding: 14px 12px;
+    color: #71857b;
+    font-size: 10px;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+.nsi-table td {
+    padding: 12px;
+    color: #456057;
+    border-bottom: 1px solid #edf2ef;
+    white-space: nowrap;
+}
+
+.nsi-table tbody tr:hover {
+    background: #fcfefc;
+}
+
+.nsi-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.nsi-product-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nsi-product-cell>div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.nsi-product-cell strong {
+    color: #29483f;
+    font-size: 11px;
+    font-weight: 650;
+}
+
+.nsi-product-cell small {
+    color: #899890;
+    font-size: 10px;
+}
+
+.nsi-product-thumb {
+    position: relative;
+    width: 48px;
+    min-width: 48px;
+    height: 43px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 7px;
+    background: #f0f8f2;
+}
+
+.nsi-product-thumb>span {
+    position: absolute;
+    font-size: 23px;
+}
+
+.nsi-product-thumb img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #f0f8f2;
+}
+
+.nsi-product-id {
+    color: #7b8e85 !important;
+    font-size: 10px;
+}
+
+.nsi-stock-input {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nsi-stock-input input {
+    width: 67px;
+    height: 34px;
+    padding: 0 7px;
+    border: 1px solid #dfe8e3;
+    border-radius: 7px;
+    outline-color: #14975e;
+    color: #2c4c3e;
+    background: #fff;
+    font: inherit;
+    font-size: 12px;
+}
+
+.nsi-stock-input>span {
+    color: #84948a;
+    font-size: 10px;
+}
+
+.nsi-stock-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 650;
+}
+
+.nsi-stock-status>span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.nsi-stock-status.in-stock {
+    color: #14804d;
+    background: #e0f7e8;
+}
+
+.nsi-stock-status.low-stock {
+    color: #a66f06;
+    background: #fff3d8;
+}
+
+.nsi-stock-status.out-stock {
+    color: #c34545;
+    background: #ffe8e8;
+}
+
+.nsi-price {
+    color: #148451 !important;
+    font-weight: 750;
+}
+
+.nsi-adjust-buttons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nsi-adjust-buttons button {
+    width: 29px;
+    height: 29px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #d8e8de;
+    border-radius: 6px;
+    color: #138451;
+    background: #f2faf5;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.nsi-adjust-buttons button:hover:not(:disabled) {
+    background: #def4e6;
+}
+
+.nsi-adjust-buttons button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.nsi-save-row {
+    min-height: 31px;
+    padding: 0 11px;
+    border: 1px solid #11965d;
+    border-radius: 6px;
+    color: #fff;
+    background: #11965d;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.nsi-save-row:hover {
+    background: #087b4a;
+}
+
+.nsi-empty {
+    padding: 45px 20px !important;
+    text-align: center;
+    white-space: normal !important;
+}
+
+.nsi-empty>span {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 32px;
+}
+
+.nsi-empty strong {
+    display: block;
+    color: #29483f;
+    font-size: 14px;
+}
+
+.nsi-empty p {
+    margin: 8px 0 14px;
+    color: #82948a;
+    line-height: 1.5;
+}
+
+.nsi-empty a {
+    display: inline-block;
+    padding: 9px 13px;
+    border-radius: 7px;
+    color: #fff;
+    background: #10965c;
+    font-weight: 650;
+}
+
+.nsi-table-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 18px;
+    border-top: 1px solid #e9efeb;
+    color: #81928a;
+    font-size: 10px;
+}
+
+.nsi-table-footer a {
+    color: #128353;
+    font-weight: 650;
+}
+
+.nsi-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 17px;
+    color: #92a39a;
+    font-size: 10px;
+}
+
+
+/* Tablet */
+
+@media (max-width: 1100px) {
+    .nsi-sidebar {
+        width: 205px;
+        min-width: 205px;
+    }
+    .nsi-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .nsi-content {
+        padding: 20px 15px 12px;
+    }
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+    .nsi-page {
+        display: block;
+    }
+    .nsi-sidebar {
+        position: relative;
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: 0;
+        padding-bottom: 9px;
+        border-right: 0;
+        border-bottom: 1px solid #e8efeb;
+    }
+    .nsi-brand {
+        height: 58px;
+    }
+    .nsi-navigation {
+        flex-direction: row;
+        gap: 6px;
+        padding-top: 9px;
+        overflow-x: auto;
+    }
+    .nsi-nav-link {
+        min-width: max-content;
+        min-height: 36px;
+        gap: 6px;
+        padding: 0 10px;
+        font-size: 11px;
+    }
+    .nsi-nav-link>span {
+        width: auto;
+        font-size: 16px;
+    }
+    .nsi-promo,
+    .nsi-sidebar-footer {
+        display: none;
+    }
+    .nsi-topbar {
+        min-height: 58px;
+        padding: 10px 12px;
+    }
+    .nsi-content {
+        padding: 18px 11px 12px;
+    }
+    .nsi-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 13px;
+    }
+    .nsi-heading h1 {
+        font-size: 23px;
+    }
+    .nsi-heading-actions {
+        width: 100%;
+    }
+    .nsi-heading-actions>* {
+        flex: 1;
+    }
+    .nsi-stats {
+        gap: 9px;
+    }
+    .nsi-stat-card {
+        min-height: 95px;
+        gap: 9px;
+        padding: 11px 9px;
+    }
+    .nsi-stat-icon {
+        width: 35px;
+        min-width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+    .nsi-stat-card strong {
+        font-size: 20px;
+    }
+    .nsi-filters {
+        padding: 12px;
+    }
+    .nsi-search {
+        flex-basis: 100%;
+    }
+    .nsi-filters select {
+        flex: 1 1 150px;
+        min-width: 0;
+    }
+    .nsi-table-footer,
+    .nsi-footer {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 380px) {
+    .nsi-stats {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

@@ -1,0 +1,812 @@
+/* =========================================
+   NEARSHOP - CUSTOMER PROFILE
+========================================= */
+
+.ns-profile-page {
+    --profile-green: #07843d;
+    --profile-green-dark: #056b30;
+    --profile-mint: #e8f7e9;
+    --profile-bg: #f2f8f4;
+    --profile-text: #14232e;
+    --profile-muted: #687581;
+    --profile-border: #e2eae5;
+    min-height: 100vh;
+    color: var(--profile-text);
+    background: var(--profile-bg);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+.ns-profile-page *,
+.ns-profile-page *::before,
+.ns-profile-page *::after {
+    box-sizing: border-box;
+}
+
+.ns-profile-page input,
+.ns-profile-page select,
+.ns-profile-page button,
+.ns-profile-page a {
+    font: inherit;
+}
+
+.ns-profile-page button {
+    cursor: pointer;
+}
+
+.ns-profile-page a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* =========================================
+   PAGE HEADER
+========================================= */
+
+.ns-profile-main {
+    width: min(1380px, calc(100% - 56px));
+    margin: 25px auto 40px;
+}
+
+.ns-profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.ns-profile-eyebrow {
+    color: var(--profile-green);
+    font-size: 10px;
+    font-weight: 850;
+    letter-spacing: 1.2px;
+}
+
+.ns-profile-header h1 {
+    margin: 7px 0;
+    color: var(--profile-text);
+    font-size: 30px;
+    font-weight: 850;
+    letter-spacing: -0.6px;
+}
+
+.ns-profile-header p {
+    margin: 0;
+    color: var(--profile-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.ns-profile-shop-link {
+    display: inline-flex;
+    min-height: 42px;
+    padding: 11px 15px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #cfe4d2;
+    border-radius: 9px;
+    color: var(--profile-green-dark) !important;
+    background: #ffffff;
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.ns-profile-shop-link:hover {
+    background: var(--profile-mint);
+}
+
+
+/* =========================================
+   STATUS MESSAGES
+========================================= */
+
+.ns-profile-success,
+.ns-profile-error {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 17px;
+    padding: 12px 15px;
+    border-radius: 9px;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.ns-profile-success {
+    border: 1px solid #cbe8d0;
+    color: #116b34;
+    background: #e8f8eb;
+}
+
+.ns-profile-success>span {
+    display: grid;
+    width: 23px;
+    height: 23px;
+    flex: 0 0 23px;
+    place-items: center;
+    border-radius: 50%;
+    color: #ffffff;
+    background: var(--profile-green);
+    font-weight: 850;
+}
+
+.ns-profile-error {
+    border: 1px solid #efcccc;
+    color: #a52a2a;
+    background: #fff2f2;
+}
+
+
+/* =========================================
+   TWO-COLUMN LAYOUT
+========================================= */
+
+.ns-profile-layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    align-items: stretch;
+    gap: 20px;
+}
+
+.ns-profile-sidebar {
+    display: flex;
+    min-width: 0;
+    padding: 17px 13px;
+    flex-direction: column;
+    border: 1px solid var(--profile-border);
+    border-radius: 13px;
+    background: #ffffff;
+}
+
+
+/* =========================================
+   CUSTOMER PROFILE SIDEBAR
+========================================= */
+
+.ns-profile-user {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 5px 3px 22px;
+    border-bottom: 1px solid var(--profile-border);
+}
+
+.ns-profile-avatar {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    place-items: center;
+    border-radius: 50%;
+    color: #ffffff;
+    background: var(--profile-green);
+    font-size: 22px;
+    font-weight: 850;
+}
+
+.ns-profile-user>div:last-child {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ns-profile-user strong {
+    color: var(--profile-text);
+    font-size: 13px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.ns-profile-user span {
+    color: var(--profile-muted);
+    font-size: 11px;
+    overflow-wrap: anywhere;
+}
+
+
+/* Sidebar links */
+
+.ns-profile-nav {
+    display: flex;
+    margin-top: 14px;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ns-profile-nav-link {
+    display: flex;
+    width: 100%;
+    min-height: 43px;
+    padding: 10px 11px;
+    align-items: center;
+    gap: 11px;
+    border: 0;
+    border-radius: 7px;
+    color: #3e4a57 !important;
+    background: transparent;
+    font-size: 12px !important;
+    text-align: left;
+    transition: background 160ms ease, color 160ms ease;
+}
+
+.ns-profile-nav-link>span {
+    display: grid;
+    width: 23px;
+    flex: 0 0 23px;
+    place-items: center;
+    color: #5a6878;
+    font-size: 19px;
+}
+
+.ns-profile-nav-link:hover {
+    color: var(--profile-green-dark) !important;
+    background: #f1faf2;
+}
+
+.ns-profile-nav-link.active {
+    position: relative;
+    color: var(--profile-green-dark) !important;
+    background: var(--profile-mint);
+    font-weight: 800;
+}
+
+.ns-profile-nav-link.active::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    border-radius: 7px 0 0 7px;
+    background: var(--profile-green);
+    content: "";
+}
+
+.ns-profile-nav-link.active>span {
+    color: var(--profile-green);
+}
+
+
+/* Shop card */
+
+.ns-profile-help-card {
+    margin-top: auto;
+    padding: 17px 12px;
+    border-radius: 11px;
+    background: var(--profile-mint);
+    text-align: center;
+}
+
+.ns-profile-help-card>span {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--profile-green);
+    font-size: 36px;
+}
+
+.ns-profile-help-card>strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 850;
+}
+
+.ns-profile-help-card p {
+    margin: 7px 0 14px;
+    color: #4c7157;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.ns-profile-help-card>a {
+    display: flex;
+    min-height: 39px;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    color: #ffffff;
+    background: var(--profile-green);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.ns-profile-help-card>a:hover {
+    background: var(--profile-green-dark);
+}
+
+
+/* =========================================
+   MAIN PROFILE CONTENT
+========================================= */
+
+.ns-profile-content {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 16px;
+}
+
+
+/* =========================================
+   STATISTICS CARDS
+========================================= */
+
+.ns-profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 13px;
+}
+
+.ns-profile-stat {
+    display: flex;
+    min-width: 0;
+    min-height: 91px;
+    padding: 16px;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid var(--profile-border);
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.ns-profile-stat-icon {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    place-items: center;
+    border-radius: 11px;
+    color: var(--profile-green);
+    background: var(--profile-mint);
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.ns-profile-stat>div {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ns-profile-stat strong {
+    color: var(--profile-text);
+    font-size: 23px;
+    font-weight: 850;
+}
+
+.ns-profile-stat>div>span {
+    color: var(--profile-muted);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+
+/* =========================================
+   PROFILE CONTENT CARDS
+========================================= */
+
+.ns-profile-card {
+    min-width: 0;
+    padding: 21px;
+    border: 1px solid var(--profile-border);
+    border-radius: 13px;
+    background: #ffffff;
+    box-shadow: 0 2px 7px rgb(20 50 30 / 2%);
+}
+
+.ns-profile-card-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 13px;
+    margin-bottom: 22px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--profile-border);
+}
+
+.ns-profile-card-heading>div {
+    min-width: 0;
+}
+
+.ns-profile-card-heading h2 {
+    margin: 0;
+    color: var(--profile-text);
+    font-size: 19px;
+    font-weight: 850;
+    letter-spacing: -0.3px;
+}
+
+.ns-profile-card-heading p {
+    margin: 6px 0 0;
+    color: var(--profile-muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.ns-profile-edit-button {
+    display: inline-flex;
+    min-height: 36px;
+    padding: 8px 12px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 1px solid #bedfc5;
+    border-radius: 7px;
+    color: var(--profile-green-dark);
+    background: #f5fbf5;
+    font-size: 11px;
+    font-weight: 750;
+    transition: background 160ms ease;
+}
+
+.ns-profile-edit-button:hover {
+    background: var(--profile-mint);
+}
+
+
+/* =========================================
+   PROFILE FORM FIELDS
+========================================= */
+
+.ns-profile-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 19px 16px;
+}
+
+.ns-profile-form-grid>label {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 8px;
+    color: #3e4a57;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.ns-profile-form-grid>.ns-profile-field-wide {
+    grid-column: 1 / -1;
+}
+
+.ns-profile-form-grid input,
+.ns-profile-form-grid select {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    height: 43px;
+    padding: 0 12px;
+    border: 1px solid #dce4e8;
+    border-radius: 8px;
+    outline: none;
+    color: var(--profile-text);
+    background: #ffffff;
+    font-size: 12px;
+    font-weight: 400;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.ns-profile-form-grid input:disabled,
+.ns-profile-form-grid select:disabled {
+    color: #43515b;
+    background: #f8faf8;
+    cursor: default;
+    opacity: 1;
+}
+
+.ns-profile-form-grid input::placeholder {
+    color: #9aa4aa;
+}
+
+.ns-profile-form-grid input:focus,
+.ns-profile-form-grid select:focus {
+    border-color: #80b98a;
+    box-shadow: 0 0 0 3px rgb(7 132 61 / 8%);
+}
+
+
+/* =========================================
+   SAVE / CANCEL ACTIONS
+========================================= */
+
+.ns-profile-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 21px;
+    padding-top: 17px;
+    border-top: 1px solid var(--profile-border);
+}
+
+.ns-profile-cancel-button,
+.ns-profile-save-button {
+    display: inline-flex;
+    min-height: 40px;
+    padding: 10px 16px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--profile-border);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 750;
+    transition: background 160ms ease;
+}
+
+.ns-profile-cancel-button {
+    color: #4c5b64;
+    background: #ffffff;
+}
+
+.ns-profile-cancel-button:hover {
+    background: #f1f4f2;
+}
+
+.ns-profile-save-button {
+    border-color: var(--profile-green);
+    color: #ffffff;
+    background: var(--profile-green);
+}
+
+.ns-profile-save-button:hover {
+    background: var(--profile-green-dark);
+}
+
+
+/* =========================================
+   SECURITY / LOCAL STORAGE NOTE
+========================================= */
+
+.ns-profile-security-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid #d7eada;
+    border-radius: 11px;
+    background: #edf8ee;
+}
+
+.ns-profile-security-note>span {
+    display: grid;
+    width: 31px;
+    height: 31px;
+    flex: 0 0 31px;
+    place-items: center;
+    border-radius: 50%;
+    color: #ffffff;
+    background: var(--profile-green);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.ns-profile-security-note>div {
+    min-width: 0;
+}
+
+.ns-profile-security-note strong {
+    display: block;
+    color: var(--profile-green-dark);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.ns-profile-security-note p {
+    margin: 5px 0 0;
+    color: #5d7763;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+.ns-profile-page button:focus-visible,
+.ns-profile-page a:focus-visible,
+.ns-profile-page input:focus-visible,
+.ns-profile-page select:focus-visible {
+    outline: 3px solid rgb(7 132 61 / 25%);
+    outline-offset: 3px;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1050px) {
+    .ns-profile-main {
+        width: calc(100% - 36px);
+    }
+    .ns-profile-layout {
+        grid-template-columns: 205px minmax(0, 1fr);
+        gap: 14px;
+    }
+    .ns-profile-sidebar {
+        padding: 13px 10px;
+    }
+    .ns-profile-help-card {
+        padding: 13px 9px;
+    }
+    .ns-profile-stats {
+        gap: 9px;
+    }
+    .ns-profile-stat {
+        padding: 12px;
+        gap: 9px;
+    }
+    .ns-profile-stat-icon {
+        width: 37px;
+        height: 37px;
+        flex-basis: 37px;
+        font-size: 20px;
+    }
+    .ns-profile-stat strong {
+        font-size: 20px;
+    }
+}
+
+
+/* =========================================
+   SMALL TABLET
+========================================= */
+
+@media (max-width: 800px) {
+    .ns-profile-main {
+        width: calc(100% - 24px);
+        margin-top: 17px;
+    }
+    .ns-profile-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .ns-profile-sidebar {
+        padding: 13px;
+    }
+    .ns-profile-user {
+        padding-bottom: 13px;
+    }
+    .ns-profile-nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+    }
+    .ns-profile-nav-link {
+        min-width: 0;
+        min-height: 38px;
+        padding: 8px;
+        gap: 7px;
+        font-size: 11px !important;
+    }
+    .ns-profile-help-card {
+        display: none;
+    }
+    .ns-profile-stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+    .ns-profile-main {
+        width: calc(100% - 18px);
+        margin: 13px auto 25px;
+    }
+    .ns-profile-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 13px;
+    }
+    .ns-profile-header h1 {
+        font-size: 25px;
+    }
+    .ns-profile-header p {
+        font-size: 12px;
+    }
+    .ns-profile-shop-link {
+        min-height: 38px;
+    }
+    .ns-profile-stats {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+    }
+    .ns-profile-stat {
+        min-height: 70px;
+        padding: 12px;
+    }
+    .ns-profile-stat-icon {
+        width: 39px;
+        height: 39px;
+        flex-basis: 39px;
+    }
+    .ns-profile-stat strong {
+        font-size: 20px;
+    }
+    .ns-profile-card {
+        padding: 14px;
+        border-radius: 11px;
+    }
+    .ns-profile-card-heading {
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 17px;
+        padding-bottom: 12px;
+    }
+    .ns-profile-card-heading h2 {
+        font-size: 17px;
+    }
+    .ns-profile-edit-button {
+        min-height: 33px;
+        padding: 7px 9px;
+        font-size: 10px;
+    }
+    .ns-profile-form-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 15px;
+    }
+    .ns-profile-form-grid>.ns-profile-field-wide {
+        grid-column: auto;
+    }
+    .ns-profile-form-grid>label {
+        font-size: 11px;
+    }
+    .ns-profile-form-grid input,
+    .ns-profile-form-grid select {
+        height: 42px;
+    }
+    .ns-profile-form-actions {
+        justify-content: stretch;
+    }
+    .ns-profile-form-actions button {
+        flex: 1;
+    }
+    .ns-profile-security-note {
+        padding: 12px;
+    }
+}
+
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 350px) {
+    .ns-profile-main {
+        width: calc(100% - 12px);
+    }
+    .ns-profile-nav {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .ns-profile-card-heading {
+        flex-direction: column;
+    }
+    .ns-profile-edit-button {
+        align-self: flex-start;
+    }
+}
+
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .ns-profile-page *,
+    .ns-profile-page *::before,
+    .ns-profile-page *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
