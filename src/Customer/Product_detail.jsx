@@ -99,9 +99,17 @@ export default function Product_detail() {
         )
         : [...cart, cartProduct];
 
-      localStorage.setItem(CART_KEY, JSON.stringify(updatedCart));
+      localStorage.setItem(
+        CART_KEY,
+        JSON.stringify(updatedCart)
+      );
+
+      window.dispatchEvent(
+        new Event("nearshop-cart-updated")
+      );
 
       navigate("/Add_to_card");
+
     } catch (error) {
       console.error("Unable to add product to cart:", error);
     }

@@ -23,8 +23,6 @@ import Profile from './Customer/Profile';
 import Wishlist from './Customer/Wishlist';
 
 
-
-
 function App() {
   return (
     <Routes>

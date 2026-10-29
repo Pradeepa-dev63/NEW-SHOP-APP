@@ -1,12 +1,8 @@
-
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 import Common_navbar from '../components/Navbar/Common_navbar'
 import Common_Footer from "../components/Footer/Common_Footer";
-
-import { customer_card_product } from "../components/All_Images/Images";
-
+import { customer_card_product , categoryData } from "../components/All_Images/Images";
 import "./Add_to_card.css";
 
 const CART_KEY = "nearshop-cart";
@@ -37,9 +33,9 @@ function makeSlug(value = "") {
 function getProductId(product) {
   return String(
     product?.id ??
-      product?._id ??
-      product?.slug ??
-      makeSlug(product?.name || "product")
+    product?._id ??
+    product?.slug ??
+    makeSlug(product?.name || "product")
   );
 }
 
@@ -92,12 +88,12 @@ export default function Add_to_card() {
       previousCart.map((item) =>
         String(item.id) === String(id)
           ? {
-              ...item,
-              quantity: Math.max(
-                1,
-                Number(item.quantity || 1) + amount
-              ),
-            }
+            ...item,
+            quantity: Math.max(
+              1,
+              Number(item.quantity || 1) + amount
+            ),
+          }
           : item
       )
     );
@@ -179,7 +175,7 @@ export default function Add_to_card() {
     (sum, item) =>
       sum +
       getMRP(item) *
-        Math.max(1, Number(item.quantity || 1)),
+      Math.max(1, Number(item.quantity || 1)),
     0
   );
 
@@ -187,7 +183,7 @@ export default function Add_to_card() {
     (sum, item) =>
       sum +
       getPrice(item) *
-        Math.max(1, Number(item.quantity || 1)),
+      Math.max(1, Number(item.quantity || 1)),
     0
   );
 
@@ -195,14 +191,14 @@ export default function Add_to_card() {
 
   const deliveryFee =
     selectedCart.length === 0 ||
-    total >= FREE_DELIVERY_THRESHOLD
+      total >= FREE_DELIVERY_THRESHOLD
       ? 0
       : DELIVERY_FEE;
 
   const couponDiscount = appliedCoupon
     ? Math.round(
-        (total * appliedCoupon.percent) / 100
-      )
+      (total * appliedCoupon.percent) / 100
+    )
     : 0;
 
   const grandTotal = Math.max(
@@ -250,28 +246,74 @@ export default function Add_to_card() {
 
   // Open Product Details from a cart or recommendation image.
   const openProduct = (product) => {
-    const productId = getProductId(product);
+    const image =
+      product.image ||
+      product.img ||
+      product.src ||
+      product.thumbnail ||
+      "";
 
-    const selectedProduct = {
-      ...product,
-      id: productId,
-      image: getProductImage(product),
-    };
+    const originalId = String(
+      product.productId ?? product.id ?? ""
+    );
 
-    try {
-      sessionStorage.setItem(
-        "nearshop_selected_product",
-        JSON.stringify(selectedProduct)
-      );
+    const categorySlug = String(
+      product.categorySlug ?? product.category ?? ""
+    )
+      .trim()
+      .toLowerCase()
+      .replace(/&/g, "")
+      .replace(/\s+/g, "-");
 
+    const categories = Object.entries(categoryData || {});
+
+    const orderedCategories = [
+      ...categories.filter(([slug]) => slug === categorySlug),
+      ...categories.filter(([slug]) => slug !== categorySlug),
+    ];
+
+    let match = null;
+
+    for (const [slug, category] of orderedCategories) {
+      const products = Array.isArray(category?.products)
+        ? category.products
+        : [];
+
+      const foundByImage = image
+        ? products.find((item) => {
+          const itemImage =
+            item.image ||
+            item.img ||
+            item.src ||
+            item.thumbnail ||
+            "";
+
+          return itemImage === image;
+        })
+        : null;
+
+      const foundById =
+        slug === categorySlug && originalId
+          ? products.find(
+            (item) =>
+              String(item.id ?? item._id ?? "") === originalId
+          )
+          : null;
+
+      const found = foundByImage || foundById;
+
+      if (found) {
+        match = { slug, product: found };
+        break;
+      }
+    }
+
+    if (match) {
       navigate(
-        `/product/${encodeURIComponent(productId)}`,
-        {
-          state: { product: selectedProduct },
-        }
+        `/category/${match.slug}/product/${match.product.id}`
       );
-    } catch (error) {
-      console.error("Unable to open product details:", error);
+    } else {
+      console.error("Could not find product details:", product);
     }
   };
 
@@ -295,9 +337,9 @@ export default function Add_to_card() {
         return previousCart.map((item) =>
           String(item.id) === productId
             ? {
-                ...item,
-                quantity: Number(item.quantity || 1) + 1,
-              }
+              ...item,
+              quantity: Number(item.quantity || 1) + 1,
+            }
             : item
         );
       }
@@ -316,14 +358,14 @@ export default function Add_to_card() {
   // Filter recommendations against products already in the cart.
   const recommendations = Array.isArray(customer_card_product)
     ? customer_card_product
-        .filter(
-          (product) =>
-            !cart.some(
-              (item) =>
-                String(item.id) === getProductId(product)
-            )
-        )
-        .slice(0, 6)
+      .filter(
+        (product) =>
+          !cart.some(
+            (item) =>
+              String(item.id) === getProductId(product)
+          )
+      )
+      .slice(0, 6)
     : [];
 
   return (
@@ -429,10 +471,7 @@ export default function Add_to_card() {
                       aria-label={`View ${item.name} details`}
                     >
                       {image ? (
-                        <img
-                          src={image}
-                          alt={item.name || "Grocery product"}
-                        />
+                        <img src={image} alt={item.name || "Grocery product"} />
                       ) : (
                         <span>No image available</span>
                       )}

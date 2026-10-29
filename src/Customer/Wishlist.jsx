@@ -2,23 +2,40 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Common_navbar from '../components/Navbar/Common_navbar'
 import Common_Footer from "../components/Footer/Common_Footer";
-import { customer_card_product } from "../components/All_Images/Images";
+import { customer_card_product, categoryData } from "../components/All_Images/Images";
 import "./Wishlist.css";
+
 
 const WISHLIST_KEY = "nearshop-wishlist";
 const CART_KEY = "nearshop-cart";
 
-function getProductId(product) {
+// Convert category names into URL-friendly slugs.
+function makeSlug(value = "") {
+  return String(value)
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+// Keep the wishlist ID separate from the original product ID.
+function getWishlistId(product) {
   return String(
+    product?.wishlistId ??
     product?.id ??
-      product?._id ??
-      product?.slug ??
-      String(product?.name || "product")
-        .trim()
-        .toLowerCase()
-        .replace(/&/g, "and")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "")
+    product?._id ??
+    product?.slug ??
+    makeSlug(product?.name || "product")
+  );
+}
+
+function getOriginalProductId(product) {
+  return String(
+    product?.productId ??
+    product?.id ??
+    product?._id ??
+    ""
   );
 }
 
@@ -42,115 +59,198 @@ function getOldPrice(product) {
     getPrice(product),
     Number(
       product?.oldPrice ??
-        product?.old_price ??
-        product?.mrp ??
-        product?.price ??
-        0
+      product?.old_price ??
+      product?.mrp ??
+      product?.price ??
+      0
     )
   );
 }
 
-function readWishlist() {
+function readStorage(key) {
   try {
-    const saved = JSON.parse(
-      localStorage.getItem(WISHLIST_KEY) || "[]"
-    );
-
+    const saved = JSON.parse(localStorage.getItem(key) || "[]");
     return Array.isArray(saved) ? saved : [];
   } catch {
     return [];
   }
+}
+
+function readWishlist() {
+  return readStorage(WISHLIST_KEY);
 }
 
 function readCart() {
-  try {
-    const saved = JSON.parse(
-      localStorage.getItem(CART_KEY) ||
-        localStorage.getItem("nearshop_cart") ||
-        "[]"
-    );
-
-    return Array.isArray(saved) ? saved : [];
-  } catch {
-    return [];
-  }
+  return readStorage(CART_KEY);
 }
+
+// Match a recommendation against saved products.
+// Prefer the original ID and category; use the image as a fallback.
+function isSameProduct(first, second) {
+  const firstId = getOriginalProductId(first);
+  const secondId = getOriginalProductId(second);
+
+  const firstCategory = makeSlug(
+    first?.categorySlug ?? first?.category ?? ""
+  );
+
+  const secondCategory = makeSlug(
+    second?.categorySlug ?? second?.category ?? ""
+  );
+
+  if (
+    firstId &&
+    secondId &&
+    firstId === secondId &&
+    firstCategory &&
+    secondCategory &&
+    firstCategory === secondCategory
+  ) {
+    return true;
+  }
+
+  const firstImage = getImage(first);
+  const secondImage = getImage(second);
+
+  return Boolean(firstImage && secondImage && firstImage === secondImage);
+}
+
 
 export default function Wishlist() {
   const navigate = useNavigate();
 
-  const [wishlist, setWishlist] = useState(readWishlist);
+    const [wishlist, setWishlist] = useState(readWishlist);
   const [notice, setNotice] = useState("");
 
   const availableProducts = Array.isArray(customer_card_product)
     ? customer_card_product
     : [];
 
+  // Synchronize wishlist changes from other pages and browser tabs.
   useEffect(() => {
+    const syncWishlist = () => {
+      setWishlist(readWishlist());
+    };
+
+    window.addEventListener(
+      "nearshop-wishlist-updated",
+      syncWishlist
+    );
+
+    window.addEventListener("storage", syncWishlist);
+
+    return () => {
+      window.removeEventListener(
+        "nearshop-wishlist-updated",
+        syncWishlist
+      );
+
+      window.removeEventListener("storage", syncWishlist);
+    };
+  }, []);
+
+  // Save the updated wishlist and notify the other pages.
+  function saveWishlist(updatedWishlist) {
     localStorage.setItem(
       WISHLIST_KEY,
-      JSON.stringify(wishlist)
+      JSON.stringify(updatedWishlist)
     );
-  }, [wishlist]);
 
-  const wishlistIds = new Set(
-    wishlist.map((product) => getProductId(product))
-  );
+    setWishlist(updatedWishlist);
 
-  const recommendations = availableProducts
-    .filter(
-      (product) => !wishlistIds.has(getProductId(product))
-    )
-    .slice(0, 8);
+    window.dispatchEvent(
+      new Event("nearshop-wishlist-updated")
+    );
+  }
 
-  function addToWishlist(product) {
-    const productId = getProductId(product);
+  // Find the matching product in the real category data.
+  function findProductDetails(product) {
+    const image = getImage(product);
+    const originalId = getOriginalProductId(product);
 
-    setWishlist((previous) => {
-      if (
-        previous.some(
-          (item) => getProductId(item) === productId
+    const categorySlug = makeSlug(
+      product?.categorySlug ?? product?.category ?? ""
+    );
+
+    const categories = Object.entries(categoryData || {});
+
+    // Search the saved category first.
+    const orderedCategories = [
+      ...categories.filter(([slug]) => slug === categorySlug),
+      ...categories.filter(([slug]) => slug !== categorySlug),
+    ];
+
+    for (const [slug, category] of orderedCategories) {
+      const products = Array.isArray(category?.products)
+        ? category.products
+        : [];
+
+      // Try matching the image first.
+      const imageMatch = image
+        ? products.find(
+          (item) => getImage(item) === image
         )
-      ) {
-        return previous;
+        : null;
+
+      if (imageMatch) {
+        return { slug, product: imageMatch };
       }
 
-      return [
-        ...previous,
-        {
-          ...product,
-          id: productId,
-          image: getImage(product),
-        },
-      ];
+      // Only match an ID within its saved category.
+      if (slug === categorySlug && originalId) {
+        const idMatch = products.find(
+          (item) =>
+            String(item.id ?? item._id ?? "") === originalId
+        );
+
+        if (idMatch) {
+          return { slug, product: idMatch };
+        }
+      }
+    }
+
+    // Fallback for products that exist only in homepage data.
+    const homeMatch = availableProducts.find((item) => {
+      const sameCategory =
+        makeSlug(item?.category ?? "") === categorySlug;
+
+      const sameImage =
+        image && getImage(item) === image;
+
+      const sameId =
+        originalId &&
+        String(item?.id ?? item?._id ?? "") === originalId;
+
+      return sameCategory && (sameImage || sameId);
     });
 
-    setNotice(`${product.name || "Product"} added to your Wishlist.`);
+    if (homeMatch) {
+      // Homepage-only products can be opened through the same
+      // product-details route if Product_detail.jsx supports them.
+      return {
+        slug: categorySlug,
+        product: homeMatch,
+      };
+    }
+
+    return null;
   }
 
-  function removeFromWishlist(productId) {
-    setWishlist((previous) =>
-      previous.filter(
-        (product) =>
-          getProductId(product) !== String(productId)
-      )
-    );
-
-    setNotice("Product removed from your Wishlist.");
-  }
-
-  function clearWishlist() {
-    setWishlist([]);
-    setNotice("Your Wishlist has been cleared.");
-  }
-
+  // Open the product-details page using the application's route.
   function openProduct(product) {
-    const productId = getProductId(product);
+    const match = findProductDetails(product);
+
+    if (!match || !match.slug || !match.product?.id) {
+      setNotice(
+        "Product details could not be found. Please check the product data."
+      );
+      console.error("Product details not found:", product);
+      return;
+    }
 
     const selectedProduct = {
-      ...product,
-      id: productId,
-      image: getImage(product),
+      ...match.product,
+      image: getImage(match.product),
     };
 
     sessionStorage.setItem(
@@ -159,63 +259,177 @@ export default function Wishlist() {
     );
 
     navigate(
-      `/product/${encodeURIComponent(productId)}`,
+      `/category/${match.slug}/product/${encodeURIComponent(
+        match.product.id
+      )}`,
       {
-        state: {
-          product: selectedProduct,
-        },
+        state: { product: selectedProduct },
       }
     );
   }
 
-  function addToCart(product) {
-    const productId = getProductId(product);
+  // Add a product to the wishlist.
+  function addToWishlist(product) {
+    const wishlistId = getWishlistId(product);
 
-    const cartProduct = {
+    const alreadySaved = wishlist.some(
+      (item) =>
+        getWishlistId(item) === wishlistId ||
+        isSameProduct(item, product)
+    );
+
+    if (alreadySaved) {
+      setNotice("This product is already in your Wishlist.");
+      return;
+    }
+
+    const savedProduct = {
       ...product,
-      id: productId,
+      id: wishlistId,
+      wishlistId,
+      productId: getOriginalProductId(product),
+      category: product.categorySlug ?? product.category ?? "",
       image: getImage(product),
-      quantity: 1,
     };
 
-    const cart = readCart();
+    saveWishlist([...wishlist, savedProduct]);
 
-    const existing = cart.find(
-      (item) => String(item.id) === productId
+    setNotice(
+      `${product.name || "Product"} added to your Wishlist.`
     );
-
-    const updatedCart = existing
-      ? cart.map((item) =>
-          String(item.id) === productId
-            ? {
-                ...item,
-                quantity: Number(item.quantity || 1) + 1,
-              }
-            : item
-        )
-      : [...cart, cartProduct];
-
-    localStorage.setItem(
-      CART_KEY,
-      JSON.stringify(updatedCart)
-    );
-
-    window.dispatchEvent(
-      new Event("nearshop-cart-updated")
-    );
-
-    setNotice(`${product.name || "Product"} added to your cart.`);
   }
 
+  // Remove a saved product.
+  function removeFromWishlist(product) {
+    const wishlistId = getWishlistId(product);
+
+    const updatedWishlist = wishlist.filter(
+      (item) => getWishlistId(item) !== wishlistId
+    );
+
+    saveWishlist(updatedWishlist);
+
+    setNotice("Product removed from your Wishlist.");
+  }
+
+  // Remove every saved product.
+  function clearWishlist() {
+    saveWishlist([]);
+    setNotice("Your Wishlist has been cleared.");
+  }
+
+  // Add a wishlist product to the cart.
+
+  function addToCart(product) {
+    try {
+      // 1. Read the existing cart
+      const savedCart = localStorage.getItem("nearshop-cart");
+      const cart = savedCart ? JSON.parse(savedCart) : [];
+
+      // 2. Get product details
+      const productId = String(
+        product.productId ?? product.id ?? product._id ?? ""
+      );
+
+      const category = String(
+        product.categorySlug ?? product.category ?? ""
+      );
+
+      const image =
+        product.image ??
+        product.images?.[0] ??
+        product.img ??
+        "";
+
+      if (!productId) {
+        console.error("Product ID is missing:", product);
+        setNotice("Unable to add product: product ID is missing.");
+        return;
+      }
+
+      // 3. Find whether the product already exists in the cart
+      const existingIndex = cart.findIndex((item) => {
+        const sameId = String(
+          item.productId ?? item.id ?? item._id ?? ""
+        ) === productId;
+
+        const sameCategory =
+          String(item.categorySlug ?? item.category ?? "").toLowerCase() ===
+          category.toLowerCase();
+
+        return sameId && sameCategory;
+      });
+
+      let updatedCart;
+
+      // 4. Increase quantity or add a new product
+      if (existingIndex !== -1) {
+        updatedCart = cart.map((item, index) =>
+          index === existingIndex
+            ? {
+              ...item,
+              quantity: Math.max(1, Number(item.quantity) || 1) + 1,
+            }
+            : item
+        );
+      } else {
+        const newProduct = {
+          ...product,
+          id: `${category}-${productId}`,
+          productId,
+          category,
+          name: product.name ?? product.title ?? "Grocery Product",
+          price: Number(
+            product.price ?? product.sellingPrice ?? product.offerPrice ?? 0
+          ),
+          mrp: Number(
+            product.mrp ?? product.originalPrice ?? product.price ?? 0
+          ),
+          image,
+          quantity: 1,
+        };
+
+        updatedCart = [...cart, newProduct];
+      }
+
+      // 5. Save the updated cart
+      localStorage.setItem("nearshop-cart", JSON.stringify(updatedCart));
+
+      // 6. Notify other components that the cart changed
+      window.dispatchEvent(new Event("nearshop-cart-updated"));
+      window.dispatchEvent(new Event("storage"));
+
+      // 7. Navigate to the cart page
+      navigate("/Add_to_card");
+    } catch (error) {
+      console.error("Wishlist Add to Cart error:", error);
+      setNotice("Could not add this product. Please try again.");
+    }
+  }
+
+  // Do not recommend products that are already saved.
+  const recommendations = availableProducts
+    .filter(
+      (product) =>
+        !wishlist.some(
+          (savedProduct) =>
+            isSameProduct(savedProduct, product) ||
+            getWishlistId(savedProduct) === getWishlistId(product)
+        )
+    )
+    .slice(0, 8);
+
   function renderProduct(product, isSaved) {
-    const productId = getProductId(product);
+    const productId = getWishlistId(product);
     const image = getImage(product);
     const price = getPrice(product);
     const oldPrice = getOldPrice(product);
 
     const discount =
       oldPrice > price && oldPrice > 0
-        ? Math.round(((oldPrice - price) / oldPrice) * 100)
+        ? Math.round(
+          ((oldPrice - price) / oldPrice) * 100
+        )
         : 0;
 
     return (
@@ -226,9 +440,9 @@ export default function Wishlist() {
         <div className="ns-wishlist-product-visual">
           <button
             type="button"
-            className="ns-wishlist-image-button"
+            className="wishlist-product-image"
             onClick={() => openProduct(product)}
-            aria-label={`View ${product.name} details`}
+            aria-label={`View ${product.name || "product"} details`}
           >
             {image ? (
               <img
@@ -237,9 +451,7 @@ export default function Wishlist() {
                 loading="lazy"
               />
             ) : (
-              <span className="ns-wishlist-no-image">
-                No image
-              </span>
+              <span>No image available</span>
             )}
           </button>
 
@@ -249,29 +461,29 @@ export default function Wishlist() {
             </span>
           )}
 
-          {isSaved ? (
-            <button
-              type="button"
-              className="ns-wishlist-heart is-saved"
-              onClick={() =>
-                removeFromWishlist(productId)
-              }
-              aria-label={`Remove ${product.name} from Wishlist`}
-              title="Remove from Wishlist"
-            >
-              ♥
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="ns-wishlist-heart"
-              onClick={() => addToWishlist(product)}
-              aria-label={`Add ${product.name} to Wishlist`}
-              title="Add to Wishlist"
-            >
-              ♡
-            </button>
-          )}
+          <button
+            type="button"
+            className={`ns-wishlist-heart ${isSaved ? "is-saved" : ""
+              }`}
+            onClick={() =>
+              isSaved
+                ? removeFromWishlist(product)
+                : addToWishlist(product)
+            }
+            aria-label={
+              isSaved
+                ? `Remove ${product.name} from Wishlist`
+                : `Add ${product.name} to Wishlist`
+            }
+            aria-pressed={isSaved}
+            title={
+              isSaved
+                ? "Remove from Wishlist"
+                : "Add to Wishlist"
+            }
+          >
+            ♡
+          </button>
         </div>
 
         <div className="ns-wishlist-product-info">
@@ -296,10 +508,15 @@ export default function Wishlist() {
           </div>
 
           <div className="ns-wishlist-card-actions">
+
             <button
               type="button"
               className="ns-wishlist-add-button"
-              onClick={() => addToCart(product)}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                addToCart(product);
+              }}
             >
               + Add to Cart
             </button>
@@ -312,10 +529,12 @@ export default function Wishlist() {
               View
             </button>
           </div>
+          
         </div>
       </article>
     );
   }
+
 
   return (
     <div className="ns-wishlist-page">
