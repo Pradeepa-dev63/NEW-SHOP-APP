@@ -1,19 +1,26 @@
 import { useState, useEffect } from "react";
 import "./Customer_Home.css";
 import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar/Navbar";
+import Common_navbar from '../components/Navbar/Common_navbar'
 import { customer_carosal, customer_categories, customer_card_product, categoryData } from "../components/All_Images/Images";
 import Common_Footer from "../components/Footer/Common_Footer";
 
 export default function Customer_Home() {
   const [cartCount, setCartCount] = useState(0);
-  const [favorites, setFavorites] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [toast, setToast] = useState("");
   const [email, setEmail] = useState("");
   const [currentSlide, setCurrentSlide] = useState(0);
   const heroSlides = Array.isArray(customer_carosal) ? customer_carosal : [];
   const navigate = useNavigate();
+  const WISHLIST_KEY = "nearshop-wishlist";
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]");
+    } catch {
+      return [];
+    }
+  });
 
 
   useEffect(() => {
@@ -37,17 +44,54 @@ export default function Customer_Home() {
     notify(name === "All" ? "Showing all products" : `Showing ${name}`);
   }
 
-  function toggleFavorite(id) {
-    const isFavorite = favorites.includes(id);
 
-    setFavorites((current) =>
-      isFavorite
-        ? current.filter((item) => item !== id)
-        : [...current, id]
-    );
+  function toggleFavorite(product) {
+    const wishlistId = `home-${product.category}-${product.id}`;
 
-    notify(isFavorite ? "Removed from favorites" : "Added to favorites");
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem(WISHLIST_KEY) || "[]"
+      );
+
+      const wishlist = Array.isArray(saved) ? saved : [];
+
+      const alreadySaved = wishlist.some(
+        (item) => String(item.id) === wishlistId
+      );
+
+      const updatedWishlist = alreadySaved
+        ? wishlist.filter((item) => String(item.id) !== wishlistId)
+        : [
+          ...wishlist,
+          {
+            ...product,
+            id: wishlistId,
+            productId: product.id,
+            wishlistId,
+          },
+        ];
+
+      localStorage.setItem(
+        WISHLIST_KEY,
+        JSON.stringify(updatedWishlist)
+      );
+
+      setFavorites(updatedWishlist);
+
+      window.dispatchEvent(
+        new Event("nearshop-wishlist-updated")
+      );
+
+      notify(
+        alreadySaved
+          ? "Removed from wishlist"
+          : "Added to wishlist"
+      );
+    } catch (error) {
+      console.error("Unable to update wishlist:", error);
+    }
   }
+
 
   const visibleProducts =
     selectedCategory === "All"
@@ -131,7 +175,7 @@ export default function Customer_Home() {
 
   return (
     <div className="customer-home">
-      <Navbar />
+      <Common_navbar />
 
       <main id="top">
 
@@ -247,8 +291,11 @@ export default function Customer_Home() {
           <div className="customer-products">
             {visibleProducts.length ? (
               visibleProducts.map((product) => {
-                const isFavorite = favorites.includes(product.id);
+                const wishlistId = `home-${product.category}-${product.id}`;
 
+                const isFavorite = favorites.some(
+                  (item) => String(item.id) === wishlistId
+                );
                 return (
                   <article className="customer-product" key={product.id}>
                     <div className="customer-product-visual">
@@ -261,10 +308,11 @@ export default function Customer_Home() {
                           }`}
                         aria-label={`Toggle ${product.name} favorite`}
                         aria-pressed={isFavorite}
-                        onClick={() => toggleFavorite(product.id)}
+                        onClick={() => toggleFavorite(product)}
                       >
                         {isFavorite ? "♥" : "♡"}
                       </button>
+
                       <img
                         className="customer-product-image"
                         src={product.image}

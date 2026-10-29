@@ -1,10 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar/Navbar";
-import {
-  customer_all_categories,
-  customer_categories,
-} from "../components/All_Images/Images";
+import Common_navbar from '../components/Navbar/Common_navbar'
+import {customer_all_categories,customer_categories,} from "../components/All_Images/Images";
 import "./View_all_Category_product.css";
 import Common_Footer from "../components/Footer/Common_Footer";
 
@@ -38,7 +35,7 @@ export default function Category_product() {
 
   return (
     <div className="all-category-page">
-      <Navbar />
+      <Common_navbar />
 
       <main className="all-category-main">
         <header className="all-category-toolbar">

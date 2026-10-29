@@ -1,12 +1,8 @@
-
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-
-import Navbar from "../components/Navbar/Navbar";
+import Common_navbar from '../components/Navbar/Common_navbar'
 import Common_Footer from "../components/Footer/Common_Footer";
 import { customer_card_product } from "../components/All_Images/Images";
-
 import "./Wishlist.css";
 
 const WISHLIST_KEY = "nearshop-wishlist";
@@ -323,7 +319,7 @@ export default function Wishlist() {
 
   return (
     <div className="ns-wishlist-page">
-      <Navbar />
+    <Common_navbar />
 
       <main className="ns-wishlist-main">
         <header className="ns-wishlist-header">
@@ -472,27 +468,8 @@ export default function Wishlist() {
               </div>
             )}
 
-            {recommendations.length > 0 && (
-              <section className="ns-wishlist-recommendations">
-                <div className="ns-wishlist-section-heading">
-                  <div>
-                    <h2>Discover More Groceries</h2>
-                    <p>Products you may want to save</p>
-                  </div>
-
-                  <Link to="/customer">
-                    View All →
-                  </Link>
-                </div>
-
-                <div className="ns-wishlist-grid">
-                  {recommendations.map((product) =>
-                    renderProduct(product, false)
-                  )}
-                </div>
-              </section>
-            )}
           </section>
+          
         </div>
       </main>
 

@@ -1,10 +1,7 @@
-
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import Navbar from "../components/Navbar/Navbar";
+import Common_navbar from '../components/Navbar/Common_navbar'
 import Common_Footer from "../components/Footer/Common_Footer";
-
 import "./Checkout.css";
 
 const CART_KEY = "nearshop-cart";
@@ -284,7 +281,7 @@ export default function Checkout() {
   if (placedOrder) {
     return (
       <div className="ns-checkout-page">
-        <Navbar />
+      <Common_navbar />
 
         <main className="ns-checkout-main">
           <section className="ns-checkout-success">
@@ -329,7 +326,7 @@ export default function Checkout() {
 
   return (
     <div className="ns-checkout-page">
-      <Navbar />
+      <Common_navbar />
 
       <main className="ns-checkout-main">
         {/* Checkout progress */}

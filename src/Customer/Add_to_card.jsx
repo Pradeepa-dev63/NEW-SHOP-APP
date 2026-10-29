@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import Navbar from "../components/Navbar/Navbar";
+import Common_navbar from '../components/Navbar/Common_navbar'
 import Common_Footer from "../components/Footer/Common_Footer";
 
 import { customer_card_product } from "../components/All_Images/Images";
@@ -328,7 +328,7 @@ export default function Add_to_card() {
 
   return (
     <div className="ns-cart-page">
-      <Navbar />
+      <Common_navbar />
 
       <main className="ns-cart-main">
         {/* Page heading */}

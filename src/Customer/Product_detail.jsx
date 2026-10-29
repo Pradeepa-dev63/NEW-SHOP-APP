@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Navbar from "../components/Navbar/Navbar";
+import Common_navbar from '../components/Navbar/Common_navbar'
 import { categoryData, customer_card_product, } from "../components/All_Images/Images";
 import "./Product_detail.css";
 import Common_Footer from "../components/Footer/Common_Footer";
@@ -114,7 +114,7 @@ export default function Product_detail() {
 
   return (
     <div className="pd-page">
-      <Navbar />
+      <Common_navbar />
 
       <main className="pd-main">
         <nav className="pd-breadcrumb" aria-label="Breadcrumb">

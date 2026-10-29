@@ -421,3 +421,36 @@
     padding: 10px;
   }
 }
+
+
+
+.fruit-product-image-wrap {
+  position: relative;
+}
+
+.fruit-wishlist-heart {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  color: #263238;
+  font-size: 25px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.fruit-wishlist-heart:hover {
+  transform: scale(1.08);
+}
+
+.fruit-wishlist-heart.is-favorite {
+  color: #f32626;
+}

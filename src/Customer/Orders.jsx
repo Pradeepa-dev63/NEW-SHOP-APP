@@ -1,10 +1,7 @@
-
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import Navbar from "../components/Navbar/Navbar";
+import Common_navbar from '../components/Navbar/Common_navbar'
 import Common_Footer from "../components/Footer/Common_Footer";
-
 import "./Orders.css";
 
 const ORDERS_KEY = "nearshop-orders";
@@ -431,7 +428,7 @@ export default function Orders() {
 
   return (
     <div className="ns-orders-page">
-      <Navbar />
+      <Common_navbar />
 
       <main className="ns-orders-main">
         <div className="ns-orders-dashboard">

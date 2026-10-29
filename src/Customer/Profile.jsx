@@ -1,10 +1,7 @@
-
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-import Navbar from "../components/Navbar/Navbar";
+import Common_navbar from '../components/Navbar/Common_navbar'
 import Common_Footer from "../components/Footer/Common_Footer";
-
 import "./Profile.css";
 
 const PROFILE_KEY = "nearshop-profile";
@@ -201,7 +198,7 @@ export default function Profile() {
 
   return (
     <div className="ns-profile-page">
-      <Navbar />
+      <Common_navbar />
 
       <main className="ns-profile-main">
         {/* Page heading */}

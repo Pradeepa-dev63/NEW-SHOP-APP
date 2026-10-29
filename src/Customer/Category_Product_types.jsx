@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar/Navbar";
+import Common_navbar from '../components/Navbar/Common_navbar'
 import { categoryData } from "../components/All_Images/Images";
 import "./Categoty_Product_types.css";
 import Common_Footer from "../components/Footer/Common_Footer";
@@ -15,7 +15,60 @@ export default function Product_types() {
   const [sortBy, setSortBy] = useState("recommended");
   const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
+  const WISHLIST_KEY = "nearshop-wishlist";
 
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]");
+    } catch {
+      return [];
+    }
+  });
+
+
+  const toggleWishlist = (product) => {
+    const wishlistId = `${slug}-${product.id}`;
+
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem(WISHLIST_KEY) || "[]"
+      );
+
+      const wishlist = Array.isArray(saved) ? saved : [];
+
+      const alreadySaved = wishlist.some(
+        (item) => String(item.id) === wishlistId
+      );
+
+      const updatedWishlist = alreadySaved
+        ? wishlist.filter(
+          (item) => String(item.id) !== wishlistId
+        )
+        : [
+          ...wishlist,
+          {
+            ...product,
+            id: wishlistId,
+            productId: product.id,
+            category: slug,
+            wishlistId,
+          },
+        ];
+
+      localStorage.setItem(
+        WISHLIST_KEY,
+        JSON.stringify(updatedWishlist)
+      );
+
+      setFavorites(updatedWishlist);
+
+      window.dispatchEvent(
+        new Event("nearshop-wishlist-updated")
+      );
+    } catch (error) {
+      console.error("Unable to update wishlist:", error);
+    }
+  };
 
 
   const handleAddToCart = (product) => {
@@ -90,7 +143,7 @@ export default function Product_types() {
   if (!category) {
     return (
       <div className="fruit-page">
-        <Navbar />
+        <Common_navbar />
         <main className="fruit-page-main">
           <p className="fruit-empty">Category not found.</p>
           <Link to="/customer">Back to home</Link>
@@ -103,7 +156,7 @@ export default function Product_types() {
 
   return (
     <div className="fruit-page">
-      <Navbar />
+      <Common_navbar />
 
       <main className="fruit-page-main">
         <nav className="fruit-breadcrumb" aria-label="Breadcrumb">
@@ -215,26 +268,50 @@ export default function Product_types() {
               <div className="fruit-product-grid">
                 {visibleProducts.map((product) => (
                   <article className="fruit-product-card" key={product.id}>
-                    {/* <div className="fruit-product-image">
-                      <span className="fruit-discount">{product.discount}</span>
-                      <img src={product.image} alt={product.name} loading="lazy" />
-                    </div> */}
 
-                    <Link
-                      to={`/category/${slug}/product/${product.id}`}
-                      className="fruit-product-image"
-                      aria-label={`View ${product.name} details`}
-                    >
-                      <span className="fruit-discount">
-                        {product.discount}
-                      </span>
 
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        loading="lazy"
-                      />
-                    </Link>
+                    <div className="fruit-product-image-wrap">
+                      <Link
+                        to={`/category/${slug}/product/${product.id}`}
+                        className="fruit-product-image"
+                        aria-label={`View ${product.name} details`}
+                      >
+                        <span className="fruit-discount">
+                          {product.discount}
+                        </span>
+
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          loading="lazy"
+                        />
+                      </Link>
+
+                      <button
+                        type="button"
+                        className={`fruit-wishlist-heart ${favorites.some(
+                          (item) =>
+                            String(item.id) === `${slug}-${product.id}`
+                        )
+                            ? "is-favorite"
+                            : ""
+                          }`}
+                        onClick={() => toggleWishlist(product)}
+                        aria-label={`Add ${product.name} to wishlist`}
+                      >
+                        {favorites.some(
+                          (item) =>
+                            String(item.id) === `${slug}-${product.id}`
+                        )
+                          ? "♥"
+                          : "♡"}
+                      </button>
+                    </div>
+
+
+
+
+
 
                     <div className="fruit-product-info">
                       <span className="fruit-product-type">{product.type}</span>
