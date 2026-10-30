@@ -179,7 +179,7 @@ const Home = () => {
             />
             <button type="submit">
               <SearchIcon />
-              <span>Find nearby shops</span>
+              <span> Find nearby shops</span>
             </button>
           </form>
 
@@ -203,7 +203,7 @@ const Home = () => {
         <h2>How would you like to use Near Shop?</h2>
         <p className="roles__sub">
           Choose the option that best describes you. Get started in just a few
-          clicks.
+          clicks...
         </p>
 
         <div className="roles__grid">
